@@ -1,17 +1,27 @@
 package web_crud.dao;
 
-import java.util.List;
+import org.springframework.data.repository.CrudRepository;
+import web_crud.model.User;
+
+import java.util.Optional;
 
 
-public interface UserDao<L,E> {
+public interface UserDao extends CrudRepository<User, Long> {
+    @Override
+    <S extends User> S save(S entity);
 
-    void saveUser(E user);
+    @Override
+    Optional<User> findById(Long aLong);
 
-    List<E> getAllUsers();
+    @Override
+    Iterable<User> findAll();
 
-    void removeUser(L id);
+    @Override
+    void deleteById(Long aLong);
 
-    E getUserById(L id);
+    @Override
+    void delete(User entity);
 
-    void updateUser(E user);
+    @Override
+    void deleteAll();
 }

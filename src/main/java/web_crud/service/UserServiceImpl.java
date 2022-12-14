@@ -12,19 +12,19 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService<Long, User> {
 
-    private final UserDao<Long, User> userDao;
+    private final UserDao userDao;
 
-    public UserServiceImpl(UserDao<Long, User> userDao) {
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
     public void saveUser(User user) {
-        userDao.saveUser(user);
+        userDao.save(user);
     }
 
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+        return (List<User>) userDao.findAll();
     }
 
     public void removeUser(Long id) {
