@@ -1,58 +1,63 @@
 package web_crud.controller;
 
 
+import web_crud.repository.UserRepo;
 import web_crud.model.User;
-import web_crud.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@ControllerAdvice
-@RequestMapping("/users")
 public class UserController {
 
-    private final UserService<Long, User> userService;
+    private final UserRepo userRepo;
 
 
-    public UserController(UserService<Long, User> userService) {
-        this.userService = userService;
+    public UserController(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+
+
+    @GetMapping("/users")
     public String indexPage(ModelMap model) {
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("users", userRepo.findAll());
         return "all_users";
     }
 
-    @RequestMapping(value = "/new_user", method = RequestMethod.GET)
+    @GetMapping("/new_user")
     public String newUser(ModelMap modelMap) {
         modelMap.addAttribute("user", new User());
         return "new_user";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @PostMapping("/new_user")
     public String newUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
+        userRepo.save(user);
         return "redirect:/users";
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/edit/{id}")
     public String updateUser(@PathVariable("id") long id, ModelMap model) {
-        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("user", userRepo.findById(id).get());
         return "update_user";
     }
 
-    @RequestMapping(value = "/edit/{id}", method = {RequestMethod.POST})
+    @PostMapping(value = "/edit/{id}")
     public String updateUser(@PathVariable("id") long id, @ModelAttribute("user") User user) {
-        userService.updateUser(user);
+        userRepo.save(user);
         return "redirect:/users";
     }
 
 
-    @RequestMapping(value = "/{id}", method = {RequestMethod.POST})
+    @PostMapping(value = "/{id}")
     public String removeUser(@PathVariable("id") Long id) {
-        userService.removeUser(id);
+        userRepo.deleteById(id);
+        return "redirect:/users";
+    }
+
+    @GetMapping(value = {"/users/", "/"})
+    public String redirect() {
         return "redirect:/users";
     }
 }

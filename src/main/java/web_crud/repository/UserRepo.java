@@ -1,12 +1,13 @@
-package web_crud.dao;
+package web_crud.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import web_crud.model.User;
 
 import java.util.Optional;
 
-
-public interface UserDao extends CrudRepository<User, Long> {
+@Repository
+public interface UserRepo extends CrudRepository<User, Long> {
     @Override
     <S extends User> S save(S entity);
 

@@ -3,22 +3,21 @@ package web_crud.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "USER")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Column(name = "lastname")
-    String lastname;
+    private String lastname;
 
     @Column(name = "age")
-    int age;
+    private int age;
 
     public User() {
     }
